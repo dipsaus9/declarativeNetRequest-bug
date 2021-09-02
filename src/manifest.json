@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "declarativeNetRequest Bug",
+  "description": "This is a test extension",
+  "version": "1.0",
+  "background": {
+    "service_worker": "background.ts",
+    "type": "module"
+  },
+  "externally_connectable": {
+    "matches": [
+      "http://localhost/*",
+      "*://*.google.nl/*"
+    ]
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Test popup"
+  },
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback"
+  ],
+  "host_permissions": [
+    "*://localhost/*",
+    "*://*.google.nl/*"
+  ]
+}
