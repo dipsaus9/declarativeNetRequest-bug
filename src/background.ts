@@ -2,43 +2,46 @@
 // @ts-nocheck
 /* eslint-disable no-console */
 
-let i = 0
+chrome.storage.local.set({ key: 1 })
 
 chrome.runtime.onMessage.addListener(() => {
-  i += 1
-
-  console.log(`Current value ${i}`)
-
-  chrome.declarativeNetRequest.updateDynamicRules(
-    {
-      addRules: [
-        {
-          id: 1,
-          priority: 1,
-          action: {
-            type: "modifyHeaders",
-            requestHeaders: [
+  chrome.storage.local.get("key", (response) => {
+    chrome.storage.local.set({ key: response.key + 1 }, () => {
+      chrome.storage.local.get("key", ({ key }) => {
+        console.log(`Current value ${key}`)
+        chrome.declarativeNetRequest.updateDynamicRules(
+          {
+            addRules: [
               {
-                header: "Example-Header",
-                operation: "set",
-                value: `Current value ${i}`,
+                id: 1,
+                priority: 1,
+                action: {
+                  type: "modifyHeaders",
+                  requestHeaders: [
+                    {
+                      header: "Example-Header",
+                      operation: "set",
+                      value: `Current value ${key}`,
+                    },
+                  ],
+                },
+                condition: {
+                  urlFilter: "*",
+                  resourceTypes: ["main_frame", "sub_frame", "xmlhttprequest"],
+                },
               },
             ],
+            removeRuleIds: [1],
           },
-          condition: {
-            urlFilter: "*",
-            resourceTypes: ["main_frame", "sub_frame", "xmlhttprequest"],
-          },
-        },
-      ],
-      removeRuleIds: [1],
-    },
-    () => {
-      if (chrome.runtime.lastError) {
-        console.error("Updating kiosk headers failed", {
-          error: chrome.runtime.lastError,
-        })
-      }
-    }
-  )
+          () => {
+            if (chrome.runtime.lastError) {
+              console.error("Updating kiosk headers failed", {
+                error: chrome.runtime.lastError,
+              })
+            }
+          }
+        )
+      })
+    })
+  })
 })
