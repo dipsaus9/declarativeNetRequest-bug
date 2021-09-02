@@ -1,0 +1,16 @@
+{
+  "name": "chrome-extension-bug",
+  "version": "1.0.0",
+  "description": "Testing chrome extension bug",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.4.2",
+    "vite": "^2.5.3",
+    "vite-plugin-chrome-extension": "0.0.7"
+  }
+}
